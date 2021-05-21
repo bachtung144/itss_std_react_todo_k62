@@ -6,8 +6,8 @@ import './styles/main.css';
 /* コンポーネント */
 import Todo from './components/Todo';
 import Login from "./components/Login";
-
-import { auth, storeUserInfo } from "./lib/firebase";
+import { auth, storeUserInfo, updateUser } from "./lib/firebase";
+import Upload from "./components/Upload";
 
 function App() {
     const [loading, setLoading] = useState(true);
@@ -33,6 +33,7 @@ function App() {
             return (
                 <div class="navbar-end">
                     <div class="navbar-item">
+                        <Upload userImage={user.image} onSletctedImage={handleImageChanged} />
                         {user.name}
                     </div>
                     <div class="navbar-item">
@@ -44,7 +45,12 @@ function App() {
             return (<Login />)
         }
     }
-  return (
+
+    const handleImageChanged = async downloadUrl => {
+        await updateUser(user, downloadUrl);
+    }
+
+    return (
     <div className="container is-fluid">
         <header className="navbar">
             {loading ? (
